@@ -1,0 +1,11 @@
+body {
+  position: relative;
+}
+
+#tweetContent {
+  font-size: 0.8em;
+  width: 40%;
+  position: absolute;
+  background-color: rgba(210, 210, 250, 0.8);
+  padding: 0.3%;
+}
