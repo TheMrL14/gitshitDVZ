@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
   init();
 }, false);
 
-
+//-----------------------------------------------------------------------------------------------------------INIT
 let init = () => { // Get data from csv
   d3.csv("/dataCSV")
     .then(function(data) {
@@ -34,9 +34,9 @@ let init = () => { // Get data from csv
     })
 
 }
-
+//-----------------------------------------------------------------------------------------------------------SETUP
 let setup = () => { //Setup
-
+  //--------------------------------------------------------------------------------------min&max
   let max = d3.max(d3Data, function(d) { //Calc biggest sunlight value
     return parseFloat(d.sunlight);
   });
@@ -45,54 +45,46 @@ let setup = () => { //Setup
     return parseFloat(d.sunlight);
   });
 
-
-  let x = d3.scaleLinear()
+  let max2 = d3.max(d3Data, function(d) { //Calc biggest litre value
+    return parseFloat(d.total_litres_of_pure_alcohol);
+  });
+  //--------------------------------------------------------------------------------------Scales
+  let x = d3.scaleLinear() // scale X  as to max sunlight and half of the width
     .domain([0, max])
     .range([0, width / 2]);
 
-
-
-  let max2 = d3.max(d3Data, function(d) {
-    return parseFloat(d.total_litres_of_pure_alcohol);
-  });
-  console.log(max);
-
-  let x2 = d3.scaleLinear()
+  let x2 = d3.scaleLinear() //scale X  as to max litre and half of the width
     .domain([Math.ceil(max2) + x2Padding, 0])
     .range([0, width / 2]);
 
-  let y = d3.scaleBand()
+  let y = d3.scaleBand() // scale Y to all countries
     .domain(d3Data.map(function(d) {
       return d.country;
     }))
     .range([0, height + ((d3Data.length) * ((barWidth / 2) + barOffset))])
     .padding(yPadding);
 
-  let yAxis = d3.axisLeft(y)
 
+  //--------------------------------------------------------------------------------------create axes
+  let yAxis = d3.axisLeft(y)
   let xAxis = d3.axisTop(x).scale(x);
   let xAxis2 = d3.axisTop(x2).scale(x2);
 
   let color = d3.scaleSequential(d3.interpolateMagma)
     .domain([0, max])
 
-
-  const svg = d3.select("#chart").append("svg")
+  //--------------------------------------------------------------------------------------HTMLSHizzle
+  const svg = d3.select("#chart").append("svg") // create svg element
     .attr("width", width * 2)
-    .attr("height", height + 200 + ((d3Data.length + 1) * ((barWidth / 2) + barOffset)));
-
-  let color2 = d3.scaleSequential(d3.interpolateCool)
-    .domain([max2, 0])
-
-
+    .attr("height", height + 200 + ((d3Data.length + 1) * ((barWidth / 2) + barOffset))); //Height of the canvas => height + textHeight + ()(barwidth + barOffset)* dataCount)
 
   let chartG = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
 
+  //------------------------------------------------------------- DRAW Bars
 
-
-  chartG.selectAll("rect1")
+  chartG.selectAll("rect1") // Draw sunlight bars
     .data(d3Data)
     .enter().append("rect")
     .attr("height", barWidth)
@@ -110,7 +102,7 @@ let setup = () => { //Setup
       return y(d.country) + 3;
     });
 
-  chartG.selectAll("rect2")
+  chartG.selectAll("rect2") // Draw alcohol bars
     .data(d3Data)
     .enter().append("rect")
     .attr("height", barWidth)
@@ -128,6 +120,8 @@ let setup = () => { //Setup
       return y(d.country) + 3;
     });
 
+
+  //------------------------------------------------------------- DRAW Axes
   chartG.append("g")
     .attr("class", "axis y")
     .call(yAxis);
@@ -140,7 +134,7 @@ let setup = () => { //Setup
   chartG.append("g")
     .attr("class", "axis x2")
     .call(xAxis2)
-
+  //------------------------------------------------------------- DRAW text
   chartG.append("text")
     .attr("transform",
       "translate(-5 ,-40)")
