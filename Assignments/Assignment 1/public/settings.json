@@ -1,0 +1,12 @@
+{
+    "vizID": "visuals",
+    "sketch": {
+      "backgroundColor" : 255,
+      "kansOpSplitsen" : 0.4,
+      "minRadius": 5,
+      "standardRadius": 60,
+      "maxRandomSpawnPoint": 5,
+      "sizeDifNewTweet": 20
+    }
+
+}
