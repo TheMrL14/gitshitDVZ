@@ -1,7 +1,7 @@
 {
     "vizID": "visuals",
     "sketch": {
-      "backgroundColor" : 51,
+      "backgroundColor" : 255,
       "kansOpSplitsen" : 0.4,
       "minRadius": 5,
       "standardRadius": 60,

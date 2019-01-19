@@ -6,6 +6,9 @@ body {
   font-size: 0.8em;
   width: 40%;
   position: absolute;
-  background-color: rgba(210, 210, 250, 0.8);
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 2px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  /* materialize */
   padding: 0.3%;
 }

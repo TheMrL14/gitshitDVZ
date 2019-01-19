@@ -72,22 +72,22 @@ var s = function(sketch) {
         hour = 11;
       }
       sketch.textSize(settings.textSize);
-      if (seconds < 10) { //
+      if (seconds < 10) { // if seconds < 10 -> put 0 before seconds
         sketch.text(hour + ":0" +
           seconds, timeX, timeY);
       } else {
-        sketch.text(hour + ":" +
+        sketch.text(hour + ":" + // normal clock display
           seconds, timeX, timeY);
       }
-      if (seconds == 11) {
+      if (seconds == 11) { // Stop growing when 11:11
         grow = false;
       }
-      if (seconds == settings.endSec) {
+      if (seconds == settings.endSec) { // Reload page when audio done
         location.reload();
       }
     }
 
-    function changePos() {
+    function changePos() { // Make the poppy grow random
       centerPos.y -= settings.stemGrow;
       centerPos.x += sketch.map(sketch.noise(song.currentTime()), 0, 1, -0.4, 0.4);
       var tempPos = sketch.createVector(centerPos.x, centerPos.y);
@@ -95,7 +95,7 @@ var s = function(sketch) {
       pos.push(tempPos);
     }
 
-    function drawStem() {
+    function drawStem() { // draw the stem
       sketch.noFill();
       sketch.stroke(settings.plantColor);
       sketch.strokeWeight(settings.stemWidth);
@@ -107,14 +107,13 @@ var s = function(sketch) {
       sketch.endShape();
     }
 
-    function drawPoppy() {
+    function drawPoppy() { // Draw the flower
       sketch.fill(settings.primarycol);
       sketch.stroke(settings.primarycol);
       sketch.beginShape();
       var coord = sketch.createVector();
 
       for (let index = settings.tresholdMin; index < spectrum.length - settings.tresholdMax; index++) {
-
         let element = spectrum[index];
         const angle = index / settings.secondsInAMinute * 2 * sketch.PI;
         var dir;
@@ -142,7 +141,7 @@ var s = function(sketch) {
       sketch.endShape();
     }
 
-    function drawCenter() {
+    function drawCenter() { // Draw the center of the flower
       sketch.fill(settings.centerColor);
       sketch.stroke(settings.centerColor);
       sketch.ellipse(centerPos.x, centerPos.y, settings.center + avgRadius * 2, settings.center + avgRadius * 2);
@@ -151,7 +150,7 @@ var s = function(sketch) {
     }
   };
 
-  function togglePlay() {
+  function togglePlay() { // Toggle play pause
     if (song.isPlaying()) {
       console.log("pause")
       song.pause();
