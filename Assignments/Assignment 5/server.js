@@ -20,6 +20,10 @@ app.get('/dataCSV', function(req, res) {
   res.sendFile(path.join(__dirname + '/public/data.csv'));
 });
 
+app.get('/style', function(req, res) {
+  res.sendFile(path.join(__dirname + '/public/style.css'));
+});
+
 
 let init = () => {
   app.listen(port, () => console.log(`app listening on port ${port}!`));

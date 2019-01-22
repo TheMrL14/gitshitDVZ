@@ -1,0 +1,22 @@
+.tooltip {
+  font-size: 1em;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  color: white;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  /* materialize */
+  padding: 0.3%;
+  text-align: center;
+  line-height: 30px;
+}
+
+#drank {
+  background-color: #3498db;
+}
+
+#zon {
+  font-size: 0.5em;
+  background-color: #f1c40f;
+}

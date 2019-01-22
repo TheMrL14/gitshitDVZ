@@ -6,7 +6,7 @@ const barOffset = 10;
 const x2Padding = 2;
 const yPadding = 0.5;
 const textY2Length = 150;
-
+let radiusCircle = 30;
 const margin = {
   left: 110,
   right: 50,
@@ -17,6 +17,7 @@ const margin = {
 document.addEventListener('DOMContentLoaded', function() {
   init();
 }, false);
+
 
 //-----------------------------------------------------------------------------------------------------------INIT
 let init = () => { // Get data from csv
@@ -81,6 +82,19 @@ let setup = () => { //Setup
   let chartG = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
+  d3.select("body").append("div")
+    .attr("id", "drank")
+    .attr("class", "tooltip")
+    .style("position", "absolute")
+    .style("opacity", 0);
+
+  d3.select("body").append("div")
+    .attr("id", "zon")
+    .attr("class", "tooltip")
+    .style("position", "absolute")
+    .style("opacity", 0);
+
+
 
   //------------------------------------------------------------- DRAW Bars
 
@@ -91,15 +105,29 @@ let setup = () => { //Setup
     .attr("width", function(d, i) {
       return x(d.sunlight);
     })
-    // .attr("fill", function(d, i) {
-    //   return color(d.sunlight);
-    // })
+    .attr("id", function(d, i) {
+      return d.sunlight;
+    })
     .attr("fill", "#f1c40f") //Yellow
     .attr("x", function(d) {
       return width / 2;
     })
     .attr("y", function(d) {
       return y(d.country) + 3;
+    })
+    .on('mouseover', function(d) { //http://bl.ocks.org/d3noob/a22c42db65eb00d4e369 --> tooltip
+      var xPos = parseFloat(d3.select(this).attr("x"));
+      var yPos = parseFloat(d3.select(this).attr("y"));
+      var width = parseFloat(d3.select(this).attr("width"));
+      d3.select("#zon")
+        .style("left", xPos + width + margin.left - radiusCircle / 2 + "px")
+        .style("top", yPos + margin.top + "px")
+        .text(d.sunlight + "h").transition()
+        .duration(200)
+        .style("opacity", .9);
+
+      d3.select(".tooltip").classed("hidden", false);
+
     });
 
   chartG.selectAll("rect2") // Draw alcohol bars
@@ -107,17 +135,27 @@ let setup = () => { //Setup
     .enter().append("rect")
     .attr("height", barWidth)
     .attr("width", function(d, i) {
-      return (width / 2) - x2(d.total_litres_of_pure_alcohol);
+      return (width / 2) - x2(d.total_litres_of_pure_alcohol); // change width
     })
-    // .attr("fill", function(d, i) {
-    //   return color2(d.total_litres_of_pure_alcohol);
-    // })
     .attr("fill", "#3498db") //Blue
     .attr("x", function(d) {
-      return x2(d.total_litres_of_pure_alcohol);
+      return x2(d.total_litres_of_pure_alcohol); //change X pos
     })
     .attr("y", function(d) {
       return y(d.country) + 3;
+    })
+    .on('mouseover', function(d) { //http://bl.ocks.org/d3noob/a22c42db65eb00d4e369 --> tooltip
+      var xPos = parseFloat(d3.select(this).attr("x"));
+      var yPos = parseFloat(d3.select(this).attr("y"));
+      d3.select("#drank")
+        .style("left", xPos + margin.left - radiusCircle / 2 + "px")
+        .style("top", yPos + margin.top + "px")
+        .text(d.total_litres_of_pure_alcohol + "l").transition()
+        .duration(200)
+        .style("opacity", .9);
+
+      d3.select(".tooltip").classed("hidden", false);
+
     });
 
 
@@ -153,5 +191,6 @@ let setup = () => { //Setup
     .attr("class",
       "Title")
     .text("Correlation between alcohol consumption and amount of sunlight");
+
 
 }
